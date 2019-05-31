@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "224658815592",
+    "firebase_url": "https://eventmanag-3376e.firebaseio.com",
+    "project_id": "eventmanag-3376e",
+    "storage_bucket": "eventmanag-3376e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:224658815592:android:df356e2912f10239",
+        "android_client_info": {
+          "package_name": "com.rahul.eventmanag"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "224658815592-lbp3art6m0gmkh844ttn1tjdt6ourkrf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rahul.eventmanag",
+            "certificate_hash": "a158ed9ea498d2df7d7c2070a89eb5630cf2a656"
+          }
+        },
+        {
+          "client_id": "224658815592-r0a1md0lsaue2q4o26ihksau9g3n6p66.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmauVsCR3lGsscPcdaNfGjC3yNql4ks1I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "224658815592-r0a1md0lsaue2q4o26ihksau9g3n6p66.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
