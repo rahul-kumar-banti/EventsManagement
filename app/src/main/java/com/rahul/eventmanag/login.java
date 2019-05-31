@@ -1,6 +1,7 @@
 package com.rahul.eventmanag;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,8 +9,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -23,7 +28,7 @@ EditText email,pass;
 Boolean remeber=false;
 Intent intent;
 private FirebaseAuth mAuth;
-
+ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +37,8 @@ private FirebaseAuth mAuth;
         pass=findViewById(R.id.pass);
         email=findViewById(R.id.email);
         pass=findViewById(R.id.pass);
-//        mAuth = FirebaseAuth.getInstance();
+        progressBar=findViewById(R.id.loginprogressBar);
+        mAuth = FirebaseAuth.getInstance();
         checkBox=findViewById(R.id.remember);
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -48,13 +54,13 @@ private FirebaseAuth mAuth;
             @Override
             public void onClick(View v) {
                 Intent i=new Intent(login.this,com.rahul.eventmanag.userCreation.class);
-            Toast.makeText(login.this,"hellow",Toast.LENGTH_LONG).show();
             startActivity(i);
             }
         });
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
                 if (remeber){
                     Toast.makeText(login.this, "checked box hitted", Toast.LENGTH_SHORT).show();
                 }
@@ -64,9 +70,29 @@ private FirebaseAuth mAuth;
                 res=validate(emailid,password);
                 if(!res[0]){
                     email.setError("invalid email");
+                    email.requestFocus();
                 }
-                if(!res[1]){
+                else if(!res[1]){
                     pass.setError("password must be >5");
+                    pass.requestFocus();
+                }
+                else
+                {
+mAuth.signInWithEmailAndPassword(emailid,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+    @Override
+    public void onComplete(@NonNull Task<AuthResult> task) {
+        progressBar.setVisibility(View.GONE);
+        if(task.isSuccessful()){
+            Intent i=new Intent(login.this,com.rahul.eventmanag.MainActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+        }
+        else
+        {
+            Toast.makeText(login.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
+        }
+    }
+});
                 }
 
             }

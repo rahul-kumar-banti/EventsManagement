@@ -108,7 +108,12 @@
         android:background="@drawable/shapesignup"
         android:textColor="@color/white"/>
 
-
+    <ProgressBar
+        android:id="@+id/loginprogressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>
