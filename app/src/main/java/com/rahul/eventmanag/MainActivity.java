@@ -7,6 +7,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
     Toolbar toolbar;
+    Button guestc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +34,14 @@ public class MainActivity extends AppCompatActivity {
         profile=findViewById(R.id.profileimg);
         dispname=findViewById(R.id.dispname);
         toolbar=findViewById(R.id.menutoolbar);
+        guestc=findViewById(R.id.guestcreation);
+        guestc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(MainActivity.this, com.rahul.eventmanag.guestCreation.class);
+            startActivity(i);
+            }
+        });
         setSupportActionBar(toolbar);
         mAuth=FirebaseAuth.getInstance();
         loadUserInfo();

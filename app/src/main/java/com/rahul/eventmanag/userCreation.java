@@ -269,7 +269,13 @@ ProgressBar progressBar;
 
 
        }
+       else
+       {
+           updateUserDb(downloadUrl);
+           profileupdate(downloadUrl);
+       }
     }
+
 ///////////////////update  user profile///////////////////////
     private void profileupdate(Uri d) {
         FirebaseUser user = mAuth.getCurrentUser();

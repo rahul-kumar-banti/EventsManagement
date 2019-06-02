@@ -9,7 +9,7 @@
     tools:context=".MainActivity">
 <android.support.v7.widget.Toolbar
     android:id="@+id/menutoolbar"
-    android:background="@color/colorPrimary"
+    android:background="@color/signupColor"
     android:layout_width="match_parent"
     app:title="event management"
     android:layout_height="wrap_content"></android.support.v7.widget.Toolbar>
@@ -33,6 +33,15 @@
         android:gravity="center"
         android:text="TextView"
         android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/guestcreation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+android:layout_gravity="center"
+        android:gravity="center"
+        android:background="@drawable/roundedcorner"
+        android:text="create guest" />
 
 
 </LinearLayout>
