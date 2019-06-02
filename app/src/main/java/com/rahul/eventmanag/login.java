@@ -86,6 +86,7 @@ mAuth.signInWithEmailAndPassword(emailid,password).addOnCompleteListener(new OnC
             Intent i=new Intent(login.this,com.rahul.eventmanag.MainActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(i);
+            login.this.finish();
         }
         else
         {
@@ -101,8 +102,11 @@ mAuth.signInWithEmailAndPassword(emailid,password).addOnCompleteListener(new OnC
     protected void  onStart() {
 
         super.onStart();
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        updateUI(currentUser);
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser!=null){
+finish();
+startActivity(new Intent(login.this,com.rahul.eventmanag.MainActivity.class));
+        }
     }
     public static boolean[] validate(String em,String pass){
         boolean []rs=new boolean[2];

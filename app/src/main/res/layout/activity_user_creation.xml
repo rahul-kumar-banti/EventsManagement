@@ -9,110 +9,126 @@
     android:paddingRight="20dp"
     android:paddingTop="10dp"
     tools:context=".userCreation">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/regimageView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="107dp"
-        app:srcCompat="@drawable/ic_person_black_24dp"
-        android:layout_marginBottom="10dp"
-        tools:ignore="VectorDrawableCompat" />
-
-    <EditText
-    android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:id="@+id/regusername"
-    android:layout_gravity="center"
-    android:gravity="center"
-    android:layout_marginBottom="5dp"
-    android:background="@drawable/shapemail"
-    android:hint="enter full name"/>
-
-    <EditText
-        android:id="@+id/regemail"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:background="@drawable/shapemail"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:layout_marginBottom="5dp"
+        android:orientation="vertical">
 
-        android:hint="enter email" />
-    <EditText
-        android:id="@+id/regmobile"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:background="@drawable/shapemail"
-        android:layout_marginBottom="5dp"
+        <ImageView
+            android:id="@+id/regimageView"
+            android:layout_width="108dp"
+            android:layout_height="107dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/circle"
+            app:srcCompat="@drawable/ic_person_black_24dp"
+            tools:ignore="VectorDrawableCompat" />
 
-        android:gravity="center"
-        android:hint="enter mobile no" />
+        <EditText
+            android:id="@+id/regusername"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/shapemail"
+            android:gravity="center"
+            android:hint="enter full name" />
 
-    <Spinner
-        android:id="@+id/rolespinner"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/shapemail"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_marginBottom="5dp"
+        <EditText
+            android:id="@+id/regemail"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/shapemail"
+            android:gravity="center"
 
-        android:spinnerMode="dialog"
-        />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/regpassword"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_marginBottom="5dp"
-        android:inputType="textPassword"
-        android:background="@drawable/shapemail"
-        android:hint="password"/>
-    <Spinner
-        android:id="@+id/departmentspinner"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:autofillHints="depatment"
-        android:background="@drawable/shapemail"
-        android:layout_gravity="center"
-        android:layout_marginBottom="5dp"
+            android:hint="enter email" />
 
-        android:spinnerMode="dialog"
-        />
-    <EditText
-        android:id="@+id/designation"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:background="@drawable/shapemail"
-        android:gravity="center"
-        android:layout_marginBottom="5dp"
-        android:hint="enter designation" />
+        <EditText
+            android:id="@+id/regmobile"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/shapemail"
 
-    <Button
-        android:id="@+id/createaccount"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="create user"
-        android:background="@drawable/roundedcorner"
-        />
+            android:gravity="center"
+            android:hint="enter mobile no" />
+
+        <EditText
+            android:id="@+id/regpassword"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/shapemail"
+            android:gravity="center"
+            android:hint="password"
+            android:inputType="textPassword" />
+
+        <Spinner
+            android:id="@+id/rolespinner"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/shapemail"
+            android:gravity="center"
 
 
+            android:spinnerMode="dialog" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="wrap_content" />
+        <Spinner
+            android:id="@+id/departmentspinner"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
+            android:autofillHints="depatment"
+            android:background="@drawable/shapemail"
+            android:gravity="center"
 
-</LinearLayout>
+
+            android:spinnerMode="dialog" />
+
+        <EditText
+            android:id="@+id/designation"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/shapemail"
+            android:gravity="center"
+            android:hint="enter designation" />
+
+        <ImageButton
+            android:id="@+id/imgChooser"
+            android:layout_width="148dp"
+            android:layout_height="39dp"
+            android:layout_gravity="center"
+
+            android:background="@drawable/shapemail"
+            app:srcCompat="@drawable/ic_photo_camera_black_24dp" />
+
+        <Button
+            android:id="@+id/createaccount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/roundedcorner"
+
+            android:text="create user" />
+
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+    </LinearLayout>
 </ScrollView>

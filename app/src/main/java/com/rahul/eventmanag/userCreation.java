@@ -1,7 +1,11 @@
 package com.rahul.eventmanag;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,27 +14,47 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
 public class userCreation extends AppCompatActivity  {
-Spinner role,dept;
+    private static final int SELECT_PICTURE = 100;
+    Spinner role,dept;
+ Uri selectedImageUri;
+    Uri downloadUrl;
 Button signup;
-EditText email,pass;
-private FirebaseAuth mAuth;
+EditText email,pass,regusername;
+private FirebaseAuth mAuth ;
+ImageView imageView;
+ImageButton imageChooser;
 ProgressBar progressBar;
+    Uri downloadUri2;
+    private StorageReference mStorageRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +62,18 @@ ProgressBar progressBar;
         mAuth=FirebaseAuth.getInstance();
         email=findViewById(R.id.regemail);
         pass=findViewById(R.id.regpassword);
+        imageView=findViewById(R.id.regimageView);
+        regusername=findViewById(R.id.regusername);
         progressBar=findViewById(R.id.progressBar);
+        imageChooser=findViewById(R.id.imgChooser);
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+        imageChooser.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                showImageChooser();
+            }
+        });
         signup=findViewById(R.id.createaccount);
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +94,7 @@ ProgressBar progressBar;
                 {
                     progressBar.setVisibility(View.VISIBLE);
                     requestSignup(emailid,password);
+
                 }
             }
         });
@@ -98,6 +134,8 @@ ProgressBar progressBar;
                             Log.d("create user", "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             Intent i=new Intent(userCreation.this,com.rahul.eventmanag.login.class);
+                            uploadImages();
+                            finish();
                             startActivity(i);
                             Toast.makeText(userCreation.this,"current user"+user.getEmail(),Toast.LENGTH_LONG).show();
                         } else {
@@ -137,4 +175,82 @@ ProgressBar progressBar;
             rs[1]=true;
         return rs;
     }
+
+    private void showImageChooser(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent,
+                "Select Picture"), SELECT_PICTURE);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_PICTURE) {
+                 selectedImageUri = data.getData();
+                try {
+                    Bitmap bitmap= MediaStore.Images.Media.getBitmap(getContentResolver(),selectedImageUri);
+                    imageView.setImageBitmap(bitmap);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+            else
+            {
+                Toast.makeText(userCreation.this,"problem in image chooser",Toast.LENGTH_LONG).show();
+
+            }
+        }
+    }
+
+    private void uploadImages(){
+
+        mStorageRef = FirebaseStorage.getInstance().getReference("profilepic"+System.currentTimeMillis()+".jpg");
+       if(selectedImageUri!=null) {
+
+            mStorageRef.putFile(selectedImageUri)
+                   .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                       @Override
+                       public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                           // Get a URL to the uploaded content
+                           mStorageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                                                 @Override
+                                                                                 public void onSuccess(Uri uri) {
+                                                                                     downloadUrl = uri;
+                                                                                     profileupdate(downloadUrl);
+                                                                                     //Do what you need to do with url
+                                                                                 }
+                                                                             });
+//                           downloadUrl = taskSnapshot.getUploadSessionUri();
+
+//                           profileupdate();
+
+                       }
+                   })
+                   .addOnFailureListener(new OnFailureListener() {
+                       @Override
+                       public void onFailure(@NonNull Exception exception) {
+                           // Handle unsuccessful uploads
+                           // ...
+                       }
+
+                   });
+
+
+       }
+    }
+
+    private void profileupdate(Uri d) {
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(regusername.getText().toString())
+                .setPhotoUri(d)
+                .build();
+
+        user.updateProfile(profileUpdates);;
+    }
+
 }
