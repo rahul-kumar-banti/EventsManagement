@@ -52,6 +52,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_marginBottom="5dp"
+            android:inputType="number"
             android:background="@drawable/shapemail"
 
             android:gravity="center"

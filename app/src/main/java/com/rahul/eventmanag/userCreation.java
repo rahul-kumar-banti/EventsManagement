@@ -30,6 +30,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
@@ -48,12 +50,15 @@ public class userCreation extends AppCompatActivity  {
  Uri selectedImageUri;
     Uri downloadUrl;
 Button signup;
-EditText email,pass,regusername;
+EditText email,pass,regusername,regMobile,designation;
 private FirebaseAuth mAuth ;
 ImageView imageView;
 ImageButton imageChooser;
 ProgressBar progressBar;
-    Uri downloadUri2;
+    DatabaseReference myRef;
+    FirebaseDatabase database;
+    String emailid,password,mobile,desig,dispn,deprt,rol;
+
     private StorageReference mStorageRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,8 @@ ProgressBar progressBar;
         setContentView(R.layout.activity_user_creation);
         mAuth=FirebaseAuth.getInstance();
         email=findViewById(R.id.regemail);
+        regMobile=findViewById(R.id.regmobile);
+        designation=findViewById(R.id.designation);
         pass=findViewById(R.id.regpassword);
         imageView=findViewById(R.id.regimageView);
         regusername=findViewById(R.id.regusername);
@@ -78,8 +85,13 @@ ProgressBar progressBar;
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String emailid=email.getText().toString();
-                String password=pass.getText().toString();
+                 emailid=email.getText().toString();
+                 password=pass.getText().toString();
+                 mobile=regMobile.getText().toString().trim();
+                 desig=designation.getText().toString().trim();
+                 dispn=regusername.getText().toString().trim();
+                 deprt=dept.getSelectedItem().toString();
+                 rol=role.getSelectedItem().toString();
                 boolean []res=new boolean[2];
                 res=validate(emailid,password);
                 if(!res[0]){
@@ -89,6 +101,20 @@ ProgressBar progressBar;
                 else if(!res[1]){
                     pass.setError("password must be >5");
                     pass.requestFocus();
+                }
+                else if(mobile.length()<10){
+                    regMobile.setError("invalid mobile no");
+                    regMobile.requestFocus();
+
+                }
+                else if(designation==null){
+                    designation.setError("fill designation");
+                    designation.requestFocus();
+                }
+                else if(dispn.length()<5)
+                {
+                   regusername.setError("name should be greater then 5 char");
+                   regusername.requestFocus();
                 }
                 else
                 {
@@ -133,10 +159,10 @@ ProgressBar progressBar;
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("create user", "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Intent i=new Intent(userCreation.this,com.rahul.eventmanag.login.class);
+
                             uploadImages();
-                            finish();
-                            startActivity(i);
+
+
                             Toast.makeText(userCreation.this,"current user"+user.getEmail(),Toast.LENGTH_LONG).show();
                         } else {
                             // If sign in fails, display a message to the user.
@@ -215,11 +241,14 @@ ProgressBar progressBar;
                        @Override
                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                            // Get a URL to the uploaded content
-                           mStorageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                           mStorageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+                           {
                                                                                  @Override
                                                                                  public void onSuccess(Uri uri) {
                                                                                      downloadUrl = uri;
+                                                                                     updateUserDb(downloadUrl);
                                                                                      profileupdate(downloadUrl);
+
                                                                                      //Do what you need to do with url
                                                                                  }
                                                                              });
@@ -241,7 +270,7 @@ ProgressBar progressBar;
 
        }
     }
-
+///////////////////update  user profile///////////////////////
     private void profileupdate(Uri d) {
         FirebaseUser user = mAuth.getCurrentUser();
 
@@ -250,7 +279,21 @@ ProgressBar progressBar;
                 .setPhotoUri(d)
                 .build();
 
-        user.updateProfile(profileUpdates);;
+        user.updateProfile(profileUpdates);
+
     }
+    //////////////////////////////
+//////////////real time user database  maintain/////////////////
+    private void updateUserDb(Uri d) {
+         database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("user");
+        String uid=myRef.push().getKey();
+        usermodel umodel=new usermodel(uid,dispn,emailid,mobile,password,rol,deprt,d.toString());
+        myRef.child(uid).setValue(umodel);
+        Toast.makeText(userCreation.this,"user create",Toast.LENGTH_LONG).show();
+        Intent i=new Intent(userCreation.this,com.rahul.eventmanag.login.class);
+        startActivity(i);
+    }
+    //////////////////////////////////////
 
 }

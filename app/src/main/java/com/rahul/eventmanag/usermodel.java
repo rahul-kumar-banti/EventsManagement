@@ -1,3 +1,5 @@
+package com.rahul.eventmanag;
+
 import android.net.Uri;
 
 public class usermodel {
